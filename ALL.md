@@ -1,5 +1,6 @@
 res.render('admin/layouts/default.pug') // auto vào views => views/admin/...
 
-script(src="./js/script.js")
+script(src="/js/script.js")  
+link(rel="stylesheet" href="/admin/css/style.css")
 
-<!-- Auto vào public dir nhưng phải có ./ ở trước -->
+<!-- /: đi vào public/js/script.js -->
