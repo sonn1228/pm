@@ -1,4 +1,5 @@
 extends ../..//layouts/default.pug
 
 block main 
-  h1 Hello World Page product
+  each item  in products 
+    li #{item}

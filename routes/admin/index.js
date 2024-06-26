@@ -2,8 +2,11 @@ const homeRoutes = require('./home.route');
 const productRoutes = require('./product.route');
 
 module.exports = (app) => {
-  app.use('/admin', homeRoutes);
 
-  app.use('/admin/products', productRoutes);
+  const PATH_ADMIN = '/admin';
+
+  app.use(`${PATH_ADMIN}/dashboard`, homeRoutes);
+
+  app.use(`${PATH_ADMIN}/products`, productRoutes);
 
 }

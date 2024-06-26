@@ -5,7 +5,7 @@ const adminRoutes = require('./routes/admin');
 const clientRoutes = require('./routes/client');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // connect database
 database.connect();

@@ -1,8 +1,6 @@
+const homeRoutes = require('./home.route');
+const productsRoutes = require('./products.route');
 module.exports = (app) => {
-  app.get('/', (req, res) => {
-    res.render('client/layouts/default.pug', {
-      titlePage: 'Title',
-      h1Mess: 'Client Home Page'
-    })
-  })
+  app.use('/', homeRoutes);
+  app.use('/products', productsRoutes);
 }

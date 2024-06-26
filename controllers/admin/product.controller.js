@@ -1,3 +1,9 @@
+const Product = require('../../models/product.model');
+
 module.exports.index = async (req, res) => {
-  res.render('admin/pages/products/index.pug');
+  const products = await Product.find({});
+  res.render('admin/pages/products/index.pug', {
+    titlePage: "Product list",
+    products: products
+  });
 }
