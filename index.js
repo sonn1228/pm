@@ -3,9 +3,15 @@ const database = require('./config/database');
 require('dotenv').config()
 const adminRoutes = require('./routes/admin');
 const clientRoutes = require('./routes/client');
-
+const systemConfig = require('./config/system');
 const app = express();
 const port = process.env.PORT;
+
+// app local variable: Chỉ dùng ở trong file pug
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
+// system config
+
+
 
 // connect database
 database.connect();
@@ -17,6 +23,9 @@ app.set('views', `./views`);
 // routes
 adminRoutes(app);
 clientRoutes(app);
+
+
+
 
 
 

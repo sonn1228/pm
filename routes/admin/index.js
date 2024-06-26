@@ -1,11 +1,13 @@
-const homeRoutes = require('./home.route');
+const dashboardRoutes = require('./home.route');
 const productRoutes = require('./product.route');
+const systemConfig = require('../../config/system');
 
 module.exports = (app) => {
+  const PATH_ADMIN = systemConfig.prefixAdmin;
 
-  const PATH_ADMIN = '/admin';
 
-  app.use(`${PATH_ADMIN}/dashboard`, homeRoutes);
+
+  app.use(`${PATH_ADMIN}/dashboard`, dashboardRoutes);
 
   app.use(`${PATH_ADMIN}/products`, productRoutes);
 
