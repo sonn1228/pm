@@ -4,4 +4,6 @@ const controller = require('../../controllers/admin/product.controller');
 const router = express.Router()
 router.get('/', controller.index);
 
+router.get('/detail/:id', controller.detail);
+
 module.exports = router;

@@ -31,3 +31,16 @@ module.exports.index = async (req, res) => {
     products: products
   });
 }
+
+module.exports.detail = async (req, res) => {
+
+  const find = {};
+  if (req.params.id) {
+    find._id = req.params.id;
+  };
+  const product = await Product.findOne(find);
+  res.render('admin/pages/products/detail.pug', {
+    titlePage: "Detail Product",
+    product: product
+  });
+}
