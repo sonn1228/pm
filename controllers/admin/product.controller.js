@@ -12,10 +12,20 @@ module.exports.index = async (req, res) => {
     find.status = req.query.status;
   }
   // end status
+  // sort
+  const sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  }
+  else {
+    sort.position = 'desc';
+  }
+  console.log(sort);
+
+  // end sort
 
 
-  const products = await Product.find(find);
-  console.log(products);
+  const products = await Product.find(find).sort(sort);
   res.render('admin/pages/products/index.pug', {
     titlePage: "Product list",
     products: products

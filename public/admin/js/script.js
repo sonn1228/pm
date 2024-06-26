@@ -1,5 +1,4 @@
 // Bộ lọc 
-console.log('Hello admin');
 const filterStatus = document.querySelector('[filter-status]');
 if (filterStatus) {
   const statusSelect = document.querySelector('[select-status]');
@@ -15,7 +14,6 @@ if (filterStatus) {
   });
 
   const stringStatus = url.searchParams.get('status');
-  console.log(stringStatus);
 
   if (stringStatus) {
     const optionChecked = document.querySelector(`option[value=${stringStatus}]`);
@@ -23,3 +21,39 @@ if (filterStatus) {
   }
 }
 // end Bộ lọc
+
+// sort
+
+const sort = document.querySelector('[sort]');
+if (sort) {
+  let url = new URL(window.location.href);
+  const sortSelect = document.querySelector('[select-sort]');
+  sortSelect.addEventListener('change', (e) => {
+    const [sortKey, sortValue] = e.target.value.split('-');
+    if (sortKey == 'position' && sortValue == 'desc') {
+      url.searchParams.delete('sortKey');
+      url.searchParams.delete('sortValue');
+    }
+    else {
+      url.searchParams.set('sortKey', sortKey);
+      url.searchParams.set('sortValue', sortValue);
+    }
+    window.location.href = url.href;
+
+  })
+  const stringSort = `${url.searchParams.get('sortKey')}-${url.searchParams.get('sortValue')}`;
+  if (stringSort) {
+    const optionChecked = sortSelect.querySelector(`option[value=${stringSort}]`);
+    if (optionChecked) {
+      optionChecked.selected = true;
+    }
+  }
+}
+
+// end sort
+
+// button-change-status
+
+
+
+// end button-change-status
