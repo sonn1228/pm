@@ -12,7 +12,6 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 // system config
 
 
-
 // connect database
 database.connect();
 // static dir
