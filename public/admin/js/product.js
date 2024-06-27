@@ -19,3 +19,21 @@ if (btnDelete.length > 0) {
 }
 
 // button-delete
+
+// form-change-status
+const btnChangeStatus = document.querySelectorAll('[button-change-status]');
+if (btnChangeStatus.length > 0) {
+  btnChangeStatus.forEach(button => {
+    button.addEventListener('click', () => {
+      const formChangeStatus = document.querySelector('[form-change-status]');
+      if (formChangeStatus) {
+        const id = button.getAttribute('data-id');
+        const status = button.getAttribute('data-status');
+        formChangeStatus.action += `/${status}/${id}?_method=patch`;
+        formChangeStatus.submit();
+      }
+    })
+  })
+}
+
+// end form-change-status

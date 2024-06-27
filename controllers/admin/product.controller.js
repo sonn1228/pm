@@ -72,3 +72,9 @@ module.exports.delete = async (req, res) => {
   await Product.deleteOne({ _id: req.params.id });
   res.redirect('back');
 }
+module.exports.changeStatus = async (req, res) => {
+  const id = req.params.id;
+  const status = req.params.status;
+  await Product.updateOne({ _id: id }, { status: status });
+  res.redirect('back');
+}
