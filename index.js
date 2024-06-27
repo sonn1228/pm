@@ -1,4 +1,5 @@
 const express = require('express');
+const methodOverride = require('method-override')
 const database = require('./config/database');
 require('dotenv').config()
 const adminRoutes = require('./routes/admin');
@@ -6,6 +7,9 @@ const clientRoutes = require('./routes/client');
 const systemConfig = require('./config/system');
 const app = express();
 const port = process.env.PORT;
+
+// method override
+app.use(methodOverride('_method'))
 
 // app local variable: Chỉ dùng ở trong file pug
 app.locals.prefixAdmin = systemConfig.prefixAdmin;

@@ -78,3 +78,8 @@ block main
               class="btn btn-info btn-sm ml-1"
             ) Chi tiết
   +pagination(objPagination)
+
+  form(action=`${prefixAdmin}/products/delete` method="post" form-delete-item)
+
+
+  script(src="/admin/js/product.js") 

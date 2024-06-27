@@ -64,3 +64,11 @@ module.exports.detail = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 }
+
+
+// [GET] /admin/products/delete/:id
+
+module.exports.delete = async (req, res) => {
+  await Product.deleteOne({ _id: req.params.id });
+  res.redirect('back');
+}
