@@ -1,4 +1,5 @@
 const Product = require('../../models/product.model');
+const paginationHelper = require('../../helpers/pagination.helper');
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -26,18 +27,14 @@ module.exports.index = async (req, res) => {
     }
 
     // Pagination
-    const objPagination = {
-      limitItem: parseInt(req.query.limit) || 5,
-      currentPage: parseInt(req.query.page) || 1,
-      skipItem: 0
-    };
-    objPagination.skipItem = (objPagination.currentPage - 1) * objPagination.limitItem;
-
     const countItem = await Product.countDocuments(find);
-    objPagination.totalPage = Math.ceil(countItem / objPagination.limitItem);
+
+    const objPagination = paginationHelper(req, countItem);
+    // end pagination
+
+
 
     const products = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skipItem);
-
     res.render('admin/pages/products/index.pug', {
       titlePage: "Product list",
       products,
