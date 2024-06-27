@@ -1,57 +1,69 @@
 const Product = require('../../models/product.model');
 
-//[GET] /admin/products
-
+// [GET] /admin/products
 module.exports.index = async (req, res) => {
-  // status
-  const find = {
-    deleted: false
-  };
-  if (req.query.status) {
-    find.status = req.query.status;
-  }
-  // end status
-  // sort
-  const sort = {};
-  if (req.query.sortKey && req.query.sortValue) {
-    sort[req.query.sortKey] = req.query.sortValue;
-  }
-  else {
-    sort.position = 'desc';
-  }
-  // end sort
-  // search
-  let objSearch = {
-    keyword: ''
-  };
-  if (req.query.keyword) {
-    const regex = new RegExp(req.query.keyword, 'i');
-    find.title = regex;
-    objSearch.keyword = req.query.keyword;
-  }
-  // end search
+  try {
+    // Status filter
+    const find = { deleted: false };
+    if (req.query.status) {
+      find.status = req.query.status;
+    }
 
-  const products = await Product.find(find).sort(sort);
-  res.render('admin/pages/products/index.pug', {
-    titlePage: "Product list",
-    products: products,
-    objSearch: objSearch
-  });
+    // Sorting
+    const sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+      sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+      sort.position = 'desc';
+    }
+
+    // Searching
+    const objSearch = { keyword: '' };
+    if (req.query.keyword) {
+      const regex = new RegExp(req.query.keyword, 'i');
+      find.title = regex;
+      objSearch.keyword = req.query.keyword;
+    }
+
+    // Pagination
+    const objPagination = {
+      limitItem: parseInt(req.query.limit) || 5,
+      currentPage: parseInt(req.query.page) || 1,
+      skipItem: 0
+    };
+    objPagination.skipItem = (objPagination.currentPage - 1) * objPagination.limitItem;
+
+    const countItem = await Product.countDocuments(find);
+    objPagination.totalPage = Math.ceil(countItem / objPagination.limitItem);
+
+    const products = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skipItem);
+
+    res.render('admin/pages/products/index.pug', {
+      titlePage: "Product list",
+      products,
+      objSearch,
+      objPagination
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).send("Internal Server Error");
+  }
 }
 
 module.exports.detail = async (req, res) => {
+  try {
+    const find = { _id: req.params.id };
+    const product = await Product.findOne(find);
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
 
-  const find = {};
-  if (req.params.id) {
-    find._id = req.params.id;
-  };
-
-
-  const product = await Product.findOne(find);
-  res.render('admin/pages/products/detail.pug', {
-    titlePage: "Detail Product",
-    product: product,
-    objSearch: objSearch,
-
-  });
+    res.render('admin/pages/products/detail.pug', {
+      titlePage: "Detail Product",
+      product
+    });
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    res.status(500).send("Internal Server Error");
+  }
 }

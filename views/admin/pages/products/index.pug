@@ -1,42 +1,18 @@
 extends ../../layouts/default.pug
+include ../../mixins/filter-status
+include ../../mixins/sort
+include ../../mixins/pagination
+include ../../mixins/search
 
 block main 
   .row 
     .col-4
-      .card
-        .card-body(filter-status)
-          .card-header Bộ lọc và Tìm Kiếm
-          select.form-select.mt-3(select-status)
-            option(value="all") Select All Product
-            option(value="active") Select active Product
-            option(value="inactive") Select inactive Product
-
+      +filter-status()
     .col-4 
       .card
-        .card-body(sort)
-          .card-header Sắp xếp
-          select.form-select.mt-3(select-sort)
-            option(value="position-desc") Vị trí giảm dần
-            option(value="position-asc") Vị trí tăng dần
-            option(value="price-desc") Giá giảm dần
-            option(value="price-asc") Giá tăng dần
-            option(value="title-asc") Tiêu đề A - Z
-            option(value="title-desc") Tiêu đề Z - A
+        +sort()
     .col-4 
-      form(form-search)
-        .input-group
-          input(
-            type="text"
-            placeholder="Nhập từ khóa"
-            name="keyword"
-            class="form-control"
-            value=objSearch.keyword
-          )
-          .input-group-append
-            button(
-              class="btn btn-success"
-              type="submit"
-            ) Tìm
+      +search(objSearch)
 
   table(
     class="table table-hover table-sm"
@@ -101,3 +77,4 @@ block main
               href=`${prefixAdmin}/products/detail/${item.id}`
               class="btn btn-info btn-sm ml-1"
             ) Chi tiết
+  +pagination(objPagination)
