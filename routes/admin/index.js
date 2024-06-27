@@ -1,4 +1,4 @@
-const dashboardRoutes = require('./home.route');
+const dashboardRoutes = require('./dashboard.route');
 const productRoutes = require('./product.route');
 const systemConfig = require('../../config/system');
 

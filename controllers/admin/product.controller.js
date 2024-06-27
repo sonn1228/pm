@@ -3,7 +3,6 @@ const Product = require('../../models/product.model');
 //[GET] /admin/products
 
 module.exports.index = async (req, res) => {
-
   // status
   const find = {
     deleted: false
@@ -20,15 +19,23 @@ module.exports.index = async (req, res) => {
   else {
     sort.position = 'desc';
   }
-  console.log(sort);
-
   // end sort
-
+  // search
+  let objSearch = {
+    keyword: ''
+  };
+  if (req.query.keyword) {
+    const regex = new RegExp(req.query.keyword, 'i');
+    find.title = regex;
+    objSearch.keyword = req.query.keyword;
+  }
+  // end search
 
   const products = await Product.find(find).sort(sort);
   res.render('admin/pages/products/index.pug', {
     titlePage: "Product list",
-    products: products
+    products: products,
+    objSearch: objSearch
   });
 }
 
@@ -38,9 +45,13 @@ module.exports.detail = async (req, res) => {
   if (req.params.id) {
     find._id = req.params.id;
   };
+
+
   const product = await Product.findOne(find);
   res.render('admin/pages/products/detail.pug', {
     titlePage: "Detail Product",
-    product: product
+    product: product,
+    objSearch: objSearch,
+
   });
 }
