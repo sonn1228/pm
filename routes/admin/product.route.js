@@ -10,6 +10,7 @@ router.delete('/delete/:id', controller.delete);
 
 router.patch('/change-status/:status/:id', controller.changeStatus);
 
+router.patch('/change-multi', controller.changeMulti);
 
 
 

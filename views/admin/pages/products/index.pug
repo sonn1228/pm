@@ -13,12 +13,29 @@ block main
         +sort()
     .col-4 
       +search(objSearch)
-
+  .row
+    .card 
+      .card-body
+        form(action=`${prefixAdmin}/products/change-multi?_method=patch` method="post" class="row" form-change-multi)
+          select(class="custom-select col-7" name="action")
+            option(selected disabled value="") Chọn hành động...
+            option(value='active') Hoạt động
+            option(value='inactive') Dừng hoạt động
+            option(value='delete') Xóa
+          input.d-none(type="text" name="ids" value="")
+          .input-group-append.col-5
+            button(
+              class="btn btn-outline-secondary"
+              type='submit'
+            ) Áp dụng
   table(
     class="table table-hover table-sm"
+    checkbox-multi
   )
     thead
       tr
+        th
+          input(type="checkbox" name="checkAll" )
         th STT
         th Hình ảnh
         th Tiêu đề
@@ -29,6 +46,8 @@ block main
     tbody
       each item, index in products
         tr
+          td 
+            input(type="checkbox" name="checkboxItem" data-id=item.id)
           td #{index + 1}
           td
             img(
