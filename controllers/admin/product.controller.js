@@ -34,7 +34,9 @@ module.exports.index = async (req, res) => {
 
 
 
-    const products = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skipItem);
+    const products = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skipItem).sort({
+      position: 'asc'
+    });
     res.render('admin/pages/products/index.pug', {
       titlePage: "Product list",
       products,
@@ -82,8 +84,7 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.changeMulti = async (req, res) => {
   try {
     const action = req.body.action;
-    const ids = req.body.ids.split('-');
-
+    const ids = req.body.ids.split(', ');
     switch (action) {
       case 'active':
         await Product.updateMany({ _id: ids }, { status: 'active' })
@@ -94,13 +95,19 @@ module.exports.changeMulti = async (req, res) => {
       case 'delete':
         await Product.updateMany({ _id: ids }, { deleted: true })
         break;
+      case 'position':
+        for (const item of ids) {
+          let [id, position] = item.split('-');
+          await Product.updateOne({ _id: id }, { position: position })
+        }
+        break;
+
       default:
         break;
     }
     res.redirect('back');
-  }
-  catch (error) {
-    res.json(error);
+  } catch (error) {
+    console.log(error);
   }
 }
 module.exports.create = async (req, res) => {

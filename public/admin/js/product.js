@@ -76,25 +76,40 @@ if (formChangeMulti) {
   formChangeMulti.addEventListener('submit', (e) => {
     e.preventDefault();
     const inputIds = formChangeMulti.querySelector('input[name="ids"]');
-    const ids = [];
-    const countInputChecked = checkboxMulti.querySelectorAll('input[name="checkboxItem"]:checked');
-    countInputChecked.forEach(input => {
-      ids.push(input.getAttribute('data-id'));
-    })
-    inputIds.value = ids.join('-');
+    const inputCheckeditems = checkboxMulti.querySelectorAll('input[name="checkboxItem"]:checked');
     const actionValue = e.target.elements.action.value;
-    console.log(actionValue);
-    if (actionValue == '') {
-      alert("Vui lòng chọn hành động");
+    if (actionValue == 'delete' && !confirm('Ban co chac muon xoa khong?')) {
+      return;
     }
-    else if (actionValue == 'delete') {
-      if (confirm('Ban co chac muon xoa khong?')) {
-        formChangeMulti.submit();
+    else if (actionValue == '') {
+      alert('Chon hanh dong!');
+      return;
+    }
+    if (inputCheckeditems.length > 0) {
+      const ids = [];
+      inputCheckeditems.forEach(input => {
+        const id = input.getAttribute('data-id');
+        if (actionValue == 'position') {
+          const position = input.closest('tr').querySelector('input[name="position"]').value;
+          ids.push(`${id}-${position}`);
+        }
+        else {
+          ids.push(input.getAttribute('data-id'));
+        }
+      })
+      inputIds.value = ids.join(', ');
+
+      if (actionValue == '') {
+        alert("Vui lòng chọn hành động");
+        return;
       }
-    }
-    else {
       formChangeMulti.submit();
     }
+    else {
+      alert('Chon it nhat mot ban ghi!');
+      return;
+    }
+
   })
 }
 
