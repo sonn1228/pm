@@ -2,7 +2,7 @@ extends ../../layouts/default.pug
 
 block main
   h2 Create Product UI
-  form(action=`${prefixAdmin}/products/create` method="post")
+  form(action=`${prefixAdmin}/products/create` method="post" enctype="multipart/form-data")
     .mb-3.mt-3
       label(for='title') Title:
       input#title.form-control(type='text' placeholder='Enter title' name='title')
@@ -15,12 +15,14 @@ block main
     .mb-3
       label(for='discountPercentage') Discount Percentage:
       input#discountPercentage.form-control(type='number' value="0" placeholder='Enter discountPercentage' name='discountPercentage')
-    .mb-3
+    .mb-3(upload-image)
       label(for='thumbnail') Thumbnail:
-      input#thumbnail.form-control(type='text' placeholder='Enter thumbnail' name='thumbnail')
+      br
+      input#thumbnail(type='file' upload-image-input placeholder='Enter thumbnail' name='thumbnail')
+      img(src="" class="image-preview" alt="" upload-image-img)
     .mb-3
       label(for='stock') Stock:
-      input#stock.form-control(type='number' value="0" placeholder='Enter stock' name='stock')
+      input#thumbnail.form-control(type='number' placeholder='Enter Stock' name='stock' value="0")
     .mb-3
       .form-check
         input#radio1.form-check-input(type='radio' name='status' value='active' checked)

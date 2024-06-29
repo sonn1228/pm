@@ -35,7 +35,7 @@ module.exports.index = async (req, res) => {
 
 
     const products = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skipItem).sort({
-      position: 'asc'
+      position: 'desc'
     });
     res.render('admin/pages/products/index.pug', {
       titlePage: "Product list",
@@ -120,9 +120,9 @@ module.exports.createPost = async (req, res) => {
   try {
     req.body.price = parseInt(req.body.price);
     req.body.stock = parseInt(req.body.stock);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
     const countItem = await Product.countDocuments({});
     req.body.position = countItem;
-
     const product = new Product(req.body);
     await product.save();
     // saved => slug

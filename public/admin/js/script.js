@@ -92,3 +92,20 @@ if (btnPagination.length > 0) {
 }
 
 // end button-pagination
+
+// upload image
+
+const uploadImage = document.querySelector('[upload-image]');
+if (uploadImage) {
+  const uploadImageInput = uploadImage.querySelector('[upload-image-input]');
+  const uploadImageImg = uploadImage.querySelector('[upload-image-img]');
+  uploadImageInput.addEventListener('change', () => {
+    const [file] = uploadImageInput.files
+    if (file) {
+      uploadImageImg.src = URL.createObjectURL(file)
+    }
+  })
+}
+// end upload image
+
+
