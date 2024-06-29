@@ -4,12 +4,14 @@ if (btnDelete.length > 0) {
   btnDelete.forEach(button => {
     button.addEventListener('click', () => {
       // form-delete-item
-      const formDelete = document.querySelector('[form-delete-item]');
-      const id = button.getAttribute('data-id');
-      if (formDelete) {
-        formDelete.action += `/${id}?_method=DELETE`;
-        console.log(formDelete.action);
-        formDelete.submit();
+      if (confirm("are you sure delete this item")) {
+        const formDelete = document.querySelector('[form-delete-item]');
+        const id = button.getAttribute('data-id');
+        if (formDelete) {
+          formDelete.action += `/${id}?_method=DELETE`;
+          console.log(formDelete.action);
+          formDelete.submit();
+        }
       }
     })
   })
@@ -81,12 +83,17 @@ if (formChangeMulti) {
     })
     inputIds.value = ids.join('-');
     const actionValue = e.target.elements.action.value;
-    if (actionValue) {
-
-      formChangeMulti.submit();
+    console.log(actionValue);
+    if (actionValue == '') {
+      alert("Vui lòng chọn hành động");
+    }
+    else if (actionValue == 'delete') {
+      if (confirm('Ban co chac muon xoa khong?')) {
+        formChangeMulti.submit();
+      }
     }
     else {
-      alert("Vui lòng chọn hành động");
+      formChangeMulti.submit();
     }
   })
 }

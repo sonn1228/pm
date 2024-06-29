@@ -80,20 +80,47 @@ module.exports.changeStatus = async (req, res) => {
 }
 
 module.exports.changeMulti = async (req, res) => {
-  const action = req.body.action;
-  const ids = req.body.ids.split('-');
+  try {
+    const action = req.body.action;
+    const ids = req.body.ids.split('-');
 
-  switch (action) {
-    case 'active':
-      await Product.updateMany({ _id: ids }, { status: 'active' })
-      break;
-    case 'inactive':
-      await Product.updateMany({ _id: ids }, { status: 'inactive' })
-
-      break;
-
-    default:
-      break;
+    switch (action) {
+      case 'active':
+        await Product.updateMany({ _id: ids }, { status: 'active' })
+        break;
+      case 'inactive':
+        await Product.updateMany({ _id: ids }, { status: 'inactive' })
+        break;
+      case 'delete':
+        await Product.updateMany({ _id: ids }, { deleted: true })
+        break;
+      default:
+        break;
+    }
+    res.redirect('back');
   }
-  res.redirect('back');
+  catch (error) {
+    res.json(error);
+  }
+}
+module.exports.create = async (req, res) => {
+  res.render('admin/pages/products/create.pug', {
+    titlePage: "Create Product"
+  })
+}
+
+module.exports.createPost = async (req, res) => {
+  try {
+    req.body.price = parseInt(req.body.price);
+    req.body.stock = parseInt(req.body.stock);
+    const countItem = await Product.countDocuments({});
+    req.body.position = countItem;
+
+    const product = new Product(req.body);
+    await product.save();
+    // saved => slug
+    res.redirect(`/admin/products/`)
+  } catch (error) {
+    res.json(error);
+  }
 }
