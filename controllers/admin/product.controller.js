@@ -118,6 +118,8 @@ module.exports.create = async (req, res) => {
 
 module.exports.createPost = async (req, res) => {
   try {
+
+
     req.body.price = parseInt(req.body.price);
     req.body.stock = parseInt(req.body.stock);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -126,6 +128,7 @@ module.exports.createPost = async (req, res) => {
     const product = new Product(req.body);
     await product.save();
     // saved => slug
+    req.flash('success', 'Create product successfully');
     res.redirect(`/admin/products/`)
   } catch (error) {
     res.json(error);

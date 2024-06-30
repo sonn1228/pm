@@ -1,6 +1,6 @@
 const express = require('express');
 const controller = require('../../controllers/admin/product.controller');
-
+const validate = require('../../validate/admin/product.validate');
 
 const multer = require('multer');
 const fileUpload = multer();
@@ -27,7 +27,7 @@ router.patch('/change-multi', controller.changeMulti);
 
 router.get('/create', controller.create);
 
-router.post('/create', fileUpload.single('thumbnail'), function (req, res, next) {
+router.post('/create', validate.createPost, fileUpload.single('thumbnail'), function (req, res, next) {
   if (req.file) {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
