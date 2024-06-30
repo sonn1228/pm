@@ -31,3 +31,4 @@ block main
 
       if (product.description)
         div(class="mb-4") !{product.description}
+      a.btn.btn-warning(href=`${prefixAdmin}/products/edit/${product.id}`) Edit product
