@@ -1,3 +1,4 @@
+const path = require('path');
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const flash = require('express-flash')
@@ -12,6 +13,8 @@ const systemConfig = require('./config/system');
 const app = express();
 const port = process.env.PORT;
 
+// tinymce
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 // express flash
 app.use(cookieParser('keyboard cat'));
@@ -32,9 +35,10 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 // connect database
 database.connect();
 // static dir
-app.use(express.static(`./public`));
-// view dir
-app.set('views', `./views`);
+app.use(express.static(`${__dirname}/public`));
+// view dir 
+app.set('views', `${__dirname}/views`);
+
 
 // routes
 adminRoutes(app);

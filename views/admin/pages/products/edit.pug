@@ -8,7 +8,7 @@ block main
       input#title.form-control(type='text' value=product.title placeholder='Enter title' name='title')
     .mb-3
       label(for='description') Description:
-      input#description.form-control(type='text' value=product.description placeholder='Enter description' name='description')
+      textarea#description.form-control(type='text' placeholder='Enter description' name='description') !{product.description}
     .mb-3
       label(for='price') Price:
       input#price.form-control(type='number' value=product.price placeholder='Enter price' name='price')
