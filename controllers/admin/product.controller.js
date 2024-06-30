@@ -134,3 +134,19 @@ module.exports.createPost = async (req, res) => {
     res.json(error);
   }
 }
+
+
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const find = {
+      _id: id,
+    }
+    const product = await Product.findOne(find);
+    res.render('admin/pages/products/edit.pug', {
+      product: product,
+    })
+  } catch (error) {
+    res.json(error);
+  }
+}

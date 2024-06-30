@@ -2,17 +2,13 @@ const express = require('express');
 const controller = require('../../controllers/admin/product.controller');
 const validate = require('../../validate/admin/product.validate');
 
+// middleware
+const middleware = require('../../middleware/cloudUpload.moddleware');
 const multer = require('multer');
-const fileUpload = multer();
-const cloudinary = require('cloudinary').v2;
-const streamifier = require('streamifier');
 
-cloudinary.config({
-  cloud_name: 'di5h6fj4a',
-  api_key: '171191531728459',
-  api_secret: 'ZuoaRv1uSOlWmnJZxS5sPxy9D5E',
-  secure: true,
-});
+const fileUpload = multer();
+
+
 
 const router = express.Router()
 router.get('/', controller.index);
@@ -27,34 +23,14 @@ router.patch('/change-multi', controller.changeMulti);
 
 router.get('/create', controller.create);
 
-router.post('/create', validate.createPost, fileUpload.single('thumbnail'), function (req, res, next) {
-  if (req.file) {
-    let streamUpload = (req) => {
-      return new Promise((resolve, reject) => {
-        let stream = cloudinary.uploader.upload_stream(
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
-          }
-        );
-        streamifier.createReadStream(req.file.buffer).pipe(stream);
-      });
-    };
+router.post('/create', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.createPost);
 
-    async function upload(req, next) {
-      let result = await streamUpload(req);
-      req.body[req.file.fieldname] = result.secure_url;
-      next();
-    }
-    upload(req, next);
-  }
-  else {
-    next();
-  }
-}, controller.createPost);
+// Không sử dụng middleware multer: Khi không có multer, Express không biết cách xử lý form có enctype="multipart/form-data"
+// => req.body = {}
+
+
+router.get('/edit/:id', controller.edit);
+router.patch('/edit/:id', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.edit);
 
 
 module.exports = router;
