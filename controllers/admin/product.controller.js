@@ -74,12 +74,14 @@ module.exports.delete = async (req, res) => {
   await Product.deleteOne({ _id: req.params.id });
   res.redirect('back');
 }
+// [GET] /admin/products/change-status/:id
 module.exports.changeStatus = async (req, res) => {
   const id = req.params.id;
   const status = req.params.status;
   await Product.updateOne({ _id: id }, { status: status });
   res.redirect('back');
 }
+// [GET] /admin/products/change-multi
 
 module.exports.changeMulti = async (req, res) => {
   try {
@@ -110,16 +112,17 @@ module.exports.changeMulti = async (req, res) => {
     console.log(error);
   }
 }
+// [GET] /admin/products/create/:id
+
 module.exports.create = async (req, res) => {
   res.render('admin/pages/products/create.pug', {
     titlePage: "Create Product"
   })
 }
+// [POST] /admin/products/create/
 
 module.exports.createPost = async (req, res) => {
   try {
-
-
     req.body.price = parseInt(req.body.price);
     req.body.stock = parseInt(req.body.stock);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -135,13 +138,14 @@ module.exports.createPost = async (req, res) => {
   }
 }
 
-
+// [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
     const find = {
       _id: id,
     }
+
     const product = await Product.findOne(find);
     res.render('admin/pages/products/edit.pug', {
       product: product,
@@ -149,4 +153,11 @@ module.exports.edit = async (req, res) => {
   } catch (error) {
     res.json(error);
   }
+}
+// [POST] /admin/products/edit/:id
+module.exports.editPost = async (req, res) => {
+  const id = req.params.id;
+  await Product.updateOne({ _id: id }, req.body);
+  req.flash('success', 'Updated Successfully');
+  res.redirect('back');
 }

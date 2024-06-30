@@ -30,7 +30,7 @@ router.post('/create', fileUpload.single('thumbnail'), middleware.uploadCloud, v
 
 
 router.get('/edit/:id', controller.edit);
-router.patch('/edit/:id', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.edit);
+router.patch('/edit/:id', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.editPost);
 
 
 module.exports = router;
