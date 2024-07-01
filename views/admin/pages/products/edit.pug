@@ -9,9 +9,11 @@ block main
     .mb-3
       label(for='description') Description:
       textarea#description.form-control(type='text' placeholder='Enter description' name='description') !{product.description}
+
     .mb-3
       label(for='price') Price:
       input#price.form-control(type='number' value=product.price placeholder='Enter price' name='price')
+
     .mb-3
       label(for='discountPercentage') Discount Percentage:
       input#discountPercentage.form-control(type='number' value=product.discountPercentage placeholder='Enter discountPercentage' name='discountPercentage')

@@ -3,7 +3,7 @@ const controller = require('../../controllers/admin/product.controller');
 const validate = require('../../validate/admin/product.validate');
 
 // middleware
-const middleware = require('../../middleware/cloudUpload.moddleware');
+const middleware = require('../../middleware/cloudUpload.middleware');
 const multer = require('multer');
 
 const fileUpload = multer();
