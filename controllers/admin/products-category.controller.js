@@ -6,10 +6,23 @@ module.exports.index = async (req, res) => {
   try {
     const find = { deleted: false };
     const records = await ProductCategory.find(find);
-
+    function createTree(arr, parentId = "") {
+      const tree = [];
+      arr.forEach((item) => {
+        if (item.parent_id === parentId) {
+          const children = createTree(arr, item.id);
+          if (children.length > 0) {
+            item.children = children;
+          }
+          tree.push(item);
+        }
+      });
+      return tree;
+    }
+    const newRecords = createTree(records);
     res.render('admin/pages/products-category/index.pug', {
       titlePage: "Product list",
-      records: records
+      records: newRecords
     });
   } catch (error) {
     console.error("Error fetching products:", error);
