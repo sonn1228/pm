@@ -37,9 +37,17 @@ module.exports.create = async (req, res) => {
 }
 module.exports.createPost = async (req, res) => {
   try {
+    const count = await ProductCategory.countDocuments({});
+    if (req.body.position) {
+      req.body.position = parseInt(req.body.position);
+    }
+    else {
+      req.body.position = count + 1;
+    }
     const record = new ProductCategory(req.body);
     await record.save();
-    console.log(record);
+
+
     req.flash('success', 'Create successs');
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
   } catch (error) {

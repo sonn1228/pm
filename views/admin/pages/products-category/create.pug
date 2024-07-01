@@ -10,26 +10,20 @@ block main
       label(for='title') Danh mục cha:
       select.form-control(name="parent_id")
         option(value="") -- Chọn danh mục cha --
+        if(records)
           each item in records
             option(value=item.id) #{item.title}
-
     .mb-3
       label(for='description') Description:
       textarea#description.form-control(type='text' placeholder='Enter description' name='description')
-    .mb-3
-      label(for='price') Price:
-      input#price.form-control(type='number' value="0" placeholder='Enter price' name='price')
-    .mb-3
-      label(for='discountPercentage') Discount Percentage:
-      input#discountPercentage.form-control(type='number' value="0" placeholder='Enter discountPercentage' name='discountPercentage')
     .mb-3(upload-image)
       label(for='thumbnail') Thumbnail:
       br
       input#thumbnail(type='file' upload-image-input placeholder='Enter thumbnail' name='thumbnail')
       img(src="" class="image-preview" alt="" upload-image-img)
     .mb-3
-      label(for='stock') Stock:
-      input#thumbnail.form-control(type='number' placeholder='Enter Stock' name='stock' value="0")
+      label(for='position') position:
+      input#thumbnail.form-control(type='number' placeholder='-- Position Up --' name='position' )
     .mb-3
       .form-check
         input#radio1.form-check-input(type='radio' name='status' value='active' checked)
