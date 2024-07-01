@@ -6,6 +6,7 @@ module.exports.index = async (req, res) => {
   try {
     const find = { deleted: false };
     const records = await ProductCategory.find(find);
+
     res.render('admin/pages/products-category/index.pug', {
       titlePage: "Product list",
       records: records
@@ -30,9 +31,25 @@ module.exports.delete = async (req, res) => {
 
 module.exports.create = async (req, res) => {
   const find = { deleted: false };
+
   const records = await ProductCategory.find(find);
+  function createTree(arr, parentId = "") {
+    const tree = [];
+    arr.forEach((item) => {
+      if (item.parent_id === parentId) {
+        const children = createTree(arr, item.id);
+        if (children.length > 0) {
+          item.children = children;
+        }
+        tree.push(item);
+      }
+    });
+    return tree;
+  }
+  const newRecords = createTree(records);
+
   res.render('admin/pages/products-category/create.pug', {
-    records: records
+    records: newRecords
   })
 }
 module.exports.createPost = async (req, res) => {
@@ -44,6 +61,8 @@ module.exports.createPost = async (req, res) => {
     else {
       req.body.position = count + 1;
     }
+
+
     const record = new ProductCategory(req.body);
     await record.save();
 
