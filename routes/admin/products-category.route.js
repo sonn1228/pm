@@ -16,6 +16,8 @@ router.delete('/delete/:id', controller.delete);
 router.get('/create', controller.create);
 router.post('/create', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.createPost);
 
+router.get('/edit/:id', controller.edit);
+router.patch('/edit/:id', fileUpload.single('thumbnail'), middleware.uploadCloud, validate.createPost, controller.editPatch);
 
 
 module.exports = router;

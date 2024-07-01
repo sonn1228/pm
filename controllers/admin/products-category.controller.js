@@ -61,3 +61,45 @@ module.exports.createPost = async (req, res) => {
     res.json(error);
   }
 }
+
+
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const find = {
+      _id: id,
+      deleted: false
+    }
+    const record = await ProductCategory.findOne(find);
+
+
+    const records = await ProductCategory.find({
+      deleted: false
+    });
+    const newRecords = createTreeHelper(records);
+
+
+    res.render('admin/pages/products-category/edit.pug', {
+      record: record,
+      records: newRecords
+    })
+  } catch (error) {
+    req.flash('error', 'Category product Not found');
+    res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+  }
+}
+
+module.exports.editPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+    req.body.position = parseInt(req.body.position);
+
+
+    await ProductCategory.updateOne({ _id: id }, req.body);
+    req.flash('Update Success');
+    res.redirect(`${systemConfig.prefixAdmin}/products-category`)
+  } catch (error) {
+    res.json(error)
+  }
+}
